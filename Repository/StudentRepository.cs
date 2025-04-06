@@ -22,6 +22,21 @@ public class StudentRepository(ApplicationDBContext context, IUserInformationFro
         return true;
     }
 
+    public async Task<List<User>> GetAllStudentsByProjectId(int projectId)
+{
+    var users = await _context.Students
+        .Where(s => s.ProjectId == projectId)
+        .Select(s => s.Student) // assuming you have navigation property `User` in Student
+        .ToListAsync();
+
+    if (users == null || !users.Any())
+    {
+        throw new NullReferenceException("Students not found.");
+    }
+
+    return users;
+}
+
     public async Task<List<GetProjectInfoDto>> GetProjectDetailsByUserIdAsync()
     {
         var userInfo = await _userInformationFromToken.GetUserIdFromDatabase();

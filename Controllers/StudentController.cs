@@ -39,4 +39,11 @@ public class StudentController(IStudentRepository studentRepository, IUserInform
         var project = await _studentRepository.ApproveStudentsForProject(projectId);
         return Ok("approved");
     }
+    [HttpGet]
+    [Route("students-byProject-id/{projectId:int}")]
+    public async Task<IActionResult> GetAllStudents([FromRoute] int projectId)
+    {
+        var students = await _studentRepository.GetAllStudentsByProjectId(projectId);
+        return Ok(students);
+    }
 }
